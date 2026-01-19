@@ -9,8 +9,9 @@
     "moduleResolution": "node",
 
     /* Project structure */
-    "rootDir": "src",
-    "outDir": "dist",
+    /* rootDir and outDir moved to tsconfig.build.json */
+
+    "noEmit": true,
 
     /* Type safety */
     "strict": true,
@@ -30,5 +31,5 @@
     /* Environment types */
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", "drizzle.config.ts"]
 }
