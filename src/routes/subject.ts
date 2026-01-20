@@ -1,4 +1,4 @@
-import { and, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
+import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
 import express from "express";
 import { subjects,departments } from "../db/schema";
 import { db } from "../db";
@@ -10,8 +10,8 @@ router.get("/" , async(req , res) => {
     try{
 
       const {search , department , page = 1 , limit = 10} = req.query;
-      const currentPage = Math.max(Number(page) , 1);
-      const limitPerPage = Math.max(Number(limit) , 1);
+      const currentPage = Math.max(Number(page) || 1, 1);
+      const limitPerPage = Math.max(Number(limit) || 10, 1);
       const offset = (currentPage - 1) * limitPerPage;
       const filterConditions = [];
 
@@ -32,7 +32,7 @@ router.get("/" , async(req , res) => {
         ...getTableColumns(subjects),
         departmentName: {...getTableColumns(departments)},
       }).from(subjects).leftJoin(departments, eq(subjects.departmentId , departments.id))
-      .where(whereClause).limit(limitPerPage).offset(offset);
+      .where(whereClause).limit(limitPerPage).offset(offset).orderBy(desc(subjects.createdAt));
 
       res.status(200).json({
         data: subjectsResult,
