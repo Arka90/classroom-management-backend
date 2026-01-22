@@ -30,7 +30,7 @@ router.get("/" , async(req , res) => {
 
       const subjectsResult = await db.select({
         ...getTableColumns(subjects),
-        departmentName: {...getTableColumns(departments)},
+        department: {...getTableColumns(departments)},
       }).from(subjects).leftJoin(departments, eq(subjects.departmentId , departments.id))
       .where(whereClause).limit(limitPerPage).offset(offset).orderBy(desc(subjects.createdAt));
 
